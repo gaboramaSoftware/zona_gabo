@@ -1,0 +1,65 @@
+#include <cstdio>
+#include <iostream>
+#include <cstring>
+#include <thread>
+#include <chrono>
+#include <cmath>
+
+using namespace std;
+
+int main(){
+	float A=0, B=0;
+	float i, j;
+	int k;
+	float z[1760];
+	char b[1760];
+	
+	cout << "\x1b[2j";
+	
+	while (true){
+		memset(b,32,1760);
+		memset(z,0,sizeof(z));
+		
+		for (j = 0; j < 6.28; j += 0.04){  
+			for (i = 0; i < 6.28; i += 0.01){  
+				float c = sin(i);
+				float d = cos(j);
+				float e = sin(A);
+				float f = sin(j);
+				float g = cos(A);
+				float h = d + 2;
+				float D = 1/(c*h*e + f*g + 5);
+				float l = cos(i);
+				float m = cos(B);
+				float n = sin(B);
+				float t = c*h*g - f*e;
+				
+				// Hacer la dona más grande - aumentar los multiplicadores
+				int x = 40 + 35 * D * (l*h*m - t*n);  
+				int y = 12 + 15 * D * (l*h*n + t*m);  
+				
+				int o = x + 80 * y;
+				int N = 8 * ((f*e - c*d*g)*m - c*d*e - f*g - l*d*n);
+				
+				if(y > 0 && y < 24 && x > 0 && x < 80 && D > z[o]){  
+					z[o] = D;
+					b[o] = ".,-~:;=!*#$@"[N > 0 ? N : 0];
+				}
+			}
+		}
+		
+		cout << "\x1b[H";
+		
+		for (k = 0; k < 1761; k++){
+			putchar(k % 80 ? b[k] : 10);
+		}
+		
+		// Aumentar velocidad de rotación
+		A += 0.20;  
+		B += 0.20;  
+		
+		this_thread::sleep_for(chrono::milliseconds(10));  // Reducir pausa
+	}
+	
+	return 0;
+}
