@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Hashing Moderno C++</title>
+    <style>
+        body { font-family: sans-serif; background: #222; color: white; padding: 20px; }
+        textarea { width: 100%; height: 100px; background: #333; color: #0f0; border: 1px solid #555; }
+        button { padding: 10px 20px; background: #007acc; color: white; border: none; cursor: pointer; font-size: 1.1em; margin-top: 10px;}
+        button:hover { background: #005f9e; }
+        #resultado { margin-top: 20px; font-size: 1.5em; color: #ffcc00; font-weight: bold; }
+        .back-link { color: #ccc; text-decoration: none; margin-bottom: 20px; display: block; }
+    </style>
+</head>
+<body>
+
+    <a href="./Cmenu.html" class="back-link">⬅ Volver al Menú</a>
+
+    <h1>Generador de Hash (C++ STL)</h1>
+    <p>Escribe texto abajo. C++ lo procesará usando <code>std::accumulate</code>.</p>
+
+    <textarea id="inputText" placeholder="Escribe aquí tu texto para hashear..."></textarea>
+    <br>
+    <button id="btnCalcular">Generar Hash</button>
+
+    <div id="resultado">Esperando input...</div>
+
+    <script type="module">
+        import createModule from './hashing_engine.js';
+
+        createModule().then((Module) => {
+            console.log("Motor de Hashing cargado.");
+
+            const btn = document.getElementById('btnCalcular');
+            const input = document.getElementById('inputText');
+            const output = document.getElementById('resultado');
+
+            // Enlazamos la función C++
+            // 'number' es el retorno (unsigned long)
+            // ['string'] es el argumento. cwrap se encarga de convertir el string de JS a char* de C++
+            const api_hash = Module.cwrap('calcular_hash_wasm', 'number', ['string']);
+
+            btn.addEventListener('click', () => {
+                const texto = input.value;
+                
+                if(!texto) {
+                    output.innerText = "Por favor escribe algo.";
+                    return;
+                }
+
+                // LLAMADA A C++
+                const hash = api_hash(texto); // ¡Así de fácil!
+                
+                // Mostrar resultado (unsigned long)
+                output.innerText = "CIFRADO NUMERICO: " + hash;
+            });
+        });
+    </script>
+</body>
+</html>

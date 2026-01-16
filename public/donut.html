@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Donut Wasm</title>
+    <style>
+        body { background: #000; color: #ccc; display: flex; justify-content: center; }
+        
+        /* IMPORTANTE: Fuente monoespaciada y interlineado ajustado */
+        #donut-container {
+            font-family: monospace;
+            white-space: pre; /* Respeta los espacios y saltos de línea */
+            font-size: 12px;
+            line-height: 12px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="donut-container">Cargando Wasm...</div>
+
+    <script type="module">
+        import createModule from './donut_engine.js';
+
+        createModule().then((Module) => {
+            // Conectar la función de C++
+            const getFrame = Module.cwrap('render_donut', 'string', []);
+            
+            const container = document.getElementById('donut-container');
+
+            function loop() {
+                // 1. Pedir el frame a C++
+                const frameTexto = getFrame();
+                
+                // 2. Ponerlo en el HTML
+                container.innerText = frameTexto;
+
+                // 3. Programar el siguiente frame (aprox 60 veces por segundo)
+                requestAnimationFrame(loop);
+            }
+
+            // Iniciar la animación
+            loop();
+        });
+    </script>
+</body>
+</html>
