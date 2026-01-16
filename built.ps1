@@ -6,7 +6,7 @@ $EMSDKPath = "C:\emsdk"
 . "$EMSDKPath\emsdk_env.ps1"
 
 #compilar
-em++ .\src\donut_2.cpp `
+em++ .\docs\donut_2.cpp `
     -O3 `
     -s WASM=1 `
     -s MODULARIZE=1 `
@@ -17,7 +17,7 @@ em++ .\src\donut_2.cpp `
 
 Write-Host "Compilando HASHING..." -ForegroundColor Cyan
 
-em++ .\src\hashing.cpp `
+em++ .\docs\hashing.cpp `
     -O3 `
     -s WASM=1 `
     -s MODULARIZE=1 `
