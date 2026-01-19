@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>ATM EvilCorp</title>
+    <style>
+        body { 
+            background-color: #0d1117; 
+            color: #00ff00; /* Verde Hacker */
+            font-family: 'Courier New', monospace; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .monitor {
+            background-color: #000;
+            border: 5px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            width: 600px;
+            height: 400px;
+            overflow-y: auto;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            white-space: pre-wrap; /* Mantiene el formato de tus \n y \t */
+        }
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        input {
+            background: #222;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 10px;
+            font-family: inherit;
+            font-size: 1.2em;
+        }
+        button {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: inherit;
+        }
+        button:hover { background: #00cc00; }
+        a { color: #555; text-decoration: none; margin-bottom: 10px; }
+        a:hover { color: #888; }
+    </style>
+</head>
+<body>
+
+    <a href="../index.html">⬅ SALIR DEL CAJERO (Volver al menú)</a>
+
+    <div class="monitor" id="screen">
+        Cargando Sistema Operativo EvilCorp v1.0...
+    </div>
+
+    <div class="controls">
+        <input type="number" id="inputNum" placeholder="Ingrese número..." autofocus>
+        <button id="btnEnter">ENTER ↵</button>
+    </div>
+
+    <script type="module">
+        import createModule from './public/atm_engine.js';
+
+        createModule().then((Module) => {
+            const screen = document.getElementById('screen');
+            const input = document.getElementById('inputNum');
+            const btn = document.getElementById('btnEnter');
+
+            // Enlazar funciones C++
+            const iniciar = Module.cwrap('iniciar_atm', 'string', []);
+            const procesar = Module.cwrap('procesar_input', 'string', ['number']);
+
+            // 1. Iniciar el cajero
+            screen.innerText = iniciar();
+
+            // Función para enviar datos
+            const enviarDatos = () => {
+                const valor = parseInt(input.value);
+                if (isNaN(valor)) return; // Si no es numero, no hacer nada
+
+                // Llamar a C++
+                const respuesta = procesar(valor);
+                
+                // Actualizar pantalla
+                screen.innerText = respuesta;
+                
+                // Limpiar input
+                input.value = "";
+                input.focus();
+                
+                // Scroll al fondo
+                screen.scrollTop = screen.scrollHeight;
+            };
+
+            // Eventos
+            btn.addEventListener('click', enviarDatos);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') enviarDatos();
+            });
+
+        });
+    </script>
+</body>
+</html>

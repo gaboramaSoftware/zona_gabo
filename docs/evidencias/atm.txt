@@ -1,0 +1,144 @@
+//primer programa creado por Gabriel Ramirez (2019)
+
+
+#include<stdio.h>
+#include<stdlib.h>	
+int b,z,r,r1,c,c1,m,g,d,s,t,r1n,cs,cA;																					//variables globales
+int ba,bb,bc,bd,be,b20,b10,b5,b2,b1;  																				//variables para el retiro de dinero
+void titulo(){																										//titulo 1 incio del cajero
+	printf("\n\n\t\tBIENVENIDO A EVILCORP.E");
+	printf("\n\n\t\t-----------------------");
+}
+void titulo2(){																										//menu del cajero
+	system("color F0");
+	printf("\n\n\t\t 		BINEVENIDO AL MENU");
+	printf("\n\n\t\t[1] para girar dinero				   [2] para depositar dinero");
+	
+	printf("\n\n\t\t[3] consultar saldo				   [4] para salir");
+	
+	printf("\n\n\t\t[5] ingresar nueva cuenta		   	   [6] para informacion de la cuenta");
+}
+void adios(){																										//texto para suspender el programa
+	printf("\n\n\n\n\n\n\t\t	MUCHAS GRACIAS POR PREFERIR EVILCORP.E");
+	printf("\n\t\t		QUE TENGA UN MUY BUEN DIA \n\n\n\n\n\n"); system("color 0F");
+}
+void infocuenta(){																									//informacion de la cuenta
+	printf("\n\t\tsu numero de cliente es : %d",r);
+	printf("\n\t\tsu clave es : %d",c);
+	printf("\n\t\tsu saldo es : %d \n\n",s);
+}
+void advertencia(){
+		while(cA!=6){
+		system("color 07");
+		system("color C1");
+		cA++;
+		}
+		cA=0;
+}	
+void billetes(int g){
+					if(g>=20000){b20=(g/20000); ba=20000; g=g-b20*20000; 
+					printf("\n\t\tretire su dinero en %d billetes de %d \n",b20 ,ba);}
+								    
+					if(g>=10000){b10=(g/10000); bb=10000; g=g-b10*10000;
+					printf("\n\t\tretire su dinero en %d billetes de %d \n",b10 ,bb);}
+									
+					if(g>=5000){b5=(g/5000);   bc=5000; g=g-b5*5000;
+					printf("\n\t\tretire su dinero en %d billetes de %d \n",b5 ,bc);}
+								
+					if(g>=2000){b2=(g/2000);   bd=2000; g=g-b2*2000;
+					printf("\n\t\tretire su dinero en %d billetes de %d \n",b2 ,bd);}
+									
+					if(g>=1000){b1=(g/1000);   be=1000; g=g-b1*1000;
+					printf("\n\t\tretire su dinero en %d billetes de %d \n",b1 ,be);}
+}
+
+int main(){
+	s=270000;
+	titulo();
+	do{																												//verificacion de rut
+	    printf("\n\n\t\tingrese su rut sin numero verificador : ");
+	    scanf("%d",&r); 
+		if(r<1000000 || r>30000000) printf("\n\t\trut invalido intentelo de nuevo \n");	}while(r<1000000 || r>30000000); r1=r%100000; printf("\n\t\tcliente : ***%d",r1);
+	
+	do{																												//verificacion clave
+		printf("\n\n\t\tingrese su clave : ");
+		scanf("%d",&c); 
+		if(c<1000 || c>9999 || c==0000 || c<0000) printf("\n\t\tdebe ser entre el intervalo 1000-9999");
+		 }while(c<1000 || c>9999 || c==0000 || c<0000);
+		system("\n\t\tPAUSE");
+		system("cls");
+	do{
+	do{
+		titulo2();
+	    printf("\n\n\t\tQUE OPERACION DESEA REALIZAR? : ");
+	    scanf("%d",&m);
+	
+	switch(m) {																										//menu en programa
+    case 1 :    printf("\n\t\tcuanto dinero desea girar? (solo multiplos de 1000) : $ ");
+				scanf("%d",&g);
+		       if(g<s && g>0){																								//condicion del giro
+				if (g%1000==0){ s=s-g;																				//limitacion de *1000 y resto del giro al total
+									billetes(g);
+								}
+				else {printf("\n\t\tsu monto tiene que ser multiplo de $1000 \n"); advertencia();}}
+	           else {printf("\n\t\tsu monto a girar no puede ser mayor al que tiene en la cuenta \n\t\trecuerde que su saldo es %d \n\n",s);advertencia();}
+		       system("\n\t\tPAUSE");
+		       system("cls");
+		       break;
+	
+		
+    case 2 :	printf("\n\t\tcuanto dinero desea depositar? (solo multiplos de 1000) : $ ");
+				scanf("%d",&d);
+				if (d>0 && d%1000==0) {
+										s=(s+d); printf("su nuevo saldo es de : $ %d \n",s);}
+		
+		else {printf("\n\t\tno puede depositar numero negativos ni numeros que no sean multiplos de 1000 \n\n");
+			 advertencia();} system( "\n\t\tPAUSE");
+			 system("cls");
+		break;
+		
+	
+		
+	case 3 :    printf("\n\t\tsu saldo actual es de $%d \n\n",s);
+				 system("\n\t\tPAUSE");
+				 system("cls");
+		break;
+		
+	case 4: break;
+	 
+	case 5: 	system("color 07");
+				do{																									//nuevo rut limitador
+						printf("\n\n\t\tingrese su rut sin numero verificador : ");
+						scanf("%d",&r1); 
+						}while(r1<1000000 || r1>30000000);
+				    do{																									//nueva clave limitador
+					printf("\n\n\t\tingrese su clave (solo 4 digitos) : ");
+					scanf("%d",&c1); 
+					}while(c1<1000 || c1>9999 || c1==0000 || c1<0000); 	system("cls");
+					   r1n=r1%10000;
+				       printf("\n\t\tNUEVO USUARIO : ***%d",r1n); s=270000; r=r1;
+				       c=c1/100;
+			           printf("\n\t\tCLAVE : %d** \n\n",c); c=c1;
+				       system("\n\t\tPAUSE");
+			           system("cls");
+				break;
+				
+				
+	case 6:      printf("\n\t\tingrese su clave para confirmar su identidad : "); scanf("%d",&cs);
+				  if(cs==c)infocuenta();
+				  else { printf("\n\t\tsu clave es incorrecta \n"); advertencia(); }
+				  system("\n\t\tPAUSE");
+				  system("cls");
+		break;
+				
+	default: printf("\n\t\tingrese desde el 1 al 6 solamente \n\n"); advertencia(); system("pause"); system("cls");
+			}
+		}while(m!=4);
+		printf("\n\n\t\tseguro desea salir? [1]yes  [0]no : "); scanf("%d",&z); system("cls");
+		}while(z!=1); adios(); 
+		system("\n\t\tPAUSE");
+		system("cls");
+	return 0;
+} 
+
+//nombres: Francisco Manzor. | Gabriel Ramirez.
