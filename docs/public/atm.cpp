@@ -21,8 +21,9 @@ void print(string texto) {
     respuesta_pantalla += texto;
 }
 
+// En web, limpiar es vaciar el string
 void limpiar_pantalla() {
-    respuesta_pantalla = ""; // En web, limpiar es vaciar el string
+    respuesta_pantalla = ""; 
 }
 
 void billetes(int g) {
